@@ -73,35 +73,35 @@ keys = [
     Key("M-<Tab>", lazy.next_layout()),
     Key("M-C-<Tab>", lazy.prev_layout()),
     
-    ## BSP Layout
+    # All Layouts
     # Change focus
     Key("M-j", lazy.layout.down()),
     Key("M-k", lazy.layout.up()),
     Key("M-h", lazy.layout.left()),
     Key("M-l", lazy.layout.right()),
     # Move window
-    Key("M-S-j", lazy.layout.shuffle_down()),
-    Key("M-S-k", lazy.layout.shuffle_up()),
-    Key("M-S-h", lazy.layout.shuffle_left()),
-    Key("M-S-l", lazy.layout.shuffle_right()),
+    Key("M-S-j", lazy.layout.shuffle_down().when(layout='bsp')),
+    Key("M-S-k", lazy.layout.shuffle_up().when(layout='bsp')),
+    Key("M-S-h", lazy.layout.shuffle_left().when(layout='bsp')),
+    Key("M-S-l", lazy.layout.shuffle_right().when(layout='bsp')),
     # Move window
-    Key("M-A-j", lazy.layout.flip_down()),
-    Key("M-A-k", lazy.layout.flip_up()),
-    Key("M-A-h", lazy.layout.flip_left()),
-    Key("M-A-l", lazy.layout.flip_right()),
+    Key("M-A-j", lazy.layout.flip_down().when(layout='bsp')),
+    Key("M-A-k", lazy.layout.flip_up().when(layout='bsp')),
+    Key("M-A-h", lazy.layout.flip_left().when(layout='bsp')),
+    Key("M-A-l", lazy.layout.flip_right().when(layout='bsp')),
     # Resize window
-    Key("M-C-j", resize_down),
-    Key("M-C-k", resize_up),
-    Key("M-C-h", resize_left),
-    Key("M-C-l", resize_right),
+    Key("M-C-j", lazy.function(resize, 'down').when(layout='bsp')),
+    Key("M-C-k", lazy.function(resize, 'up').when(layout='bsp')),
+    Key("M-C-h", lazy.function(resize, 'left').when(layout='bsp')),
+    Key("M-C-l", lazy.function(resize, 'right').when(layout='bsp')),
     # Reset
     Key("M-S-n", lazy.layout.normalize()),
     # Toggle split
-    Key("M-<space>", lazy.layout.toggle_split()),
+    Key("M-<slash>", lazy.layout.toggle_split()),
 
     # Programs shortcuts
-    Key("M-<Return>", lazy.spawn("kitty")),
-    Key("M-S-<Return>", lazy.spawn("kitty -e tmux")),
+    Key("M-<Return>", lazy.spawn("alacritty")),
+    Key("M-S-<Return>", lazy.spawn("alacritty -e tmux")),
     Key("M-e", lazy.spawn("dolphin")),
 
     Key("M-r", lazy.spawn("rofi -show combi")),
@@ -119,19 +119,28 @@ keys = [
     Key("S-<Print>", lazy.function(screenshot(rect_select = True))),
     Key("C-S-<Print>", lazy.function(screenshot(to_clip = True, rect_select = True))),
 
+    Key("M-<bracketright>", lazy.spawn("variety -n")),
+    Key("M-<bracketleft>", lazy.spawn("variety -p")),
+    Key("M-<backslash>", lazy.spawn("variety -f")),
+    Key("M-S-<backslash>", lazy.spawn("variety -t")),
+    Key("M-C-<backslash>", lazy.spawn("/home/eric/.local/bin/variety-random")),
 
-    Key("M-w", lazy.window.kill()),
+    Key("M-q", lazy.window.kill()),
     Key("M-C-r", lazy.restart()),
     Key("M-C-q", lazy.shutdown()),
-#    Key("M-S-C-q", lazy.spawn("shutdown 0")),
-    Key("M-S-C-l", lazy.spawn("gnome-screensaver-command -l")),
+    Key("M-x", lazy.spawn("/home/eric/.local/bin/rofi-power-menu")),
+    Key("M-z", lazy.spawn("/home/eric/.local/bin/lock-screen")),
+
+#    Key("M-S-C-q", lqtile plasma iconawn("shutdown 0")),
+
+    Key("M-A-l", lazy.spawn("/home/eric/.local/bin/lock-screen")),
 
     # Volume (hold shift for lighter adjustments)
-    Key("<XF86AudioLowerVolume>", lazy.spawn("amixer -c 0 -q set Master 5%-")),
-    Key("S-<XF86AudioLowerVolume>", lazy.spawn("amixer -c 0 -q set Master 1%-")),
-    Key("<XF86AudioRaiseVolume>", lazy.spawn("amixer -c 0 -q set Master 5%+")),
-    Key("S-<XF86AudioRaiseVolume>", lazy.spawn("amixer -c 0 -q set Master 1%+")),
-    Key("<XF86AudioMute>", lazy.spawn("amixer -D pulse set Master 1+ toggle")),
+    Key("<XF86AudioLowerVolume>", lazy.spawn("i3-volume -x 100 -X 1 down 5")),
+    Key("S-<XF86AudioLowerVolume>", lazy.spawn("i3-volume -x 100 -X 1 down 1")),
+    Key("<XF86AudioRaiseVolume>", lazy.spawn("i3-volume -x 100 -X 1 up 5")),
+    Key("S-<XF86AudioRaiseVolume>", lazy.spawn("i3-volume -x 100 -X 1 up 1")),
+    Key("<XF86AudioMute>", lazy.spawn("i3-volume -x 100 -X 1 mute")),
 
     # Brightness (hold shift for lighter adjustments)
     Key("<XF86MonBrightnessUp>", lazy.spawn("light -A 5")),

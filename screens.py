@@ -1,65 +1,29 @@
 # coding: utf-8
 from libqtile.config import Screen
 from libqtile import widget, bar
+from theming import theme as qtile_theme
 
 from Xlib import display as xdisplay
 
-import re # for string sanitization
-import unicodedata
-import os
-home = os.path.expanduser('~')
 
-# Solarized light
-# theme = dict(
-#     base03 = '#002b36',
-#     base02 = '#073642',
-#     base01 = '#586e75',
-#     base00 = '#657b83',
-#     base0 = '#839496',
-#     base1 = '#93a1a1',
-#     base2 = '#eee8d5',
-#     base3 = '#fdf6e3',
-#     yellow = '#b58900',
-#     orange = '#cb4b16',
-#     red = '#dc322f',
-#     magenta = '#d33682'
-# )
-
-# Theme Colors
-theme = dict(
-    base03 = '#111111',
-    base02 = '#222222',
-    base01 = '#eeeeee',
-    base00 = '#657b83',
-    base0 = '#839496',
-    base1 = '#93a1a1',
-    base2 = '#eee8d5',
-    base3 = '#fdf6e3',
-    base4 = '#4c566a',
-    base5 = '#555555',
-    current = '#7f86ce',
-    updates = '#ef937d',
-    urgent = '#cb4b16',
-)
+theme = qtile_theme.theme
 
 color_schemes = [
     dict(
-        background = theme['base03'],
-        arrow_color = theme['base02'],
-        foreground = theme['base01']
+        # background = theme['background'],
+        background = "#000000.1",
+        arrow_color = "#666666",
+        # arrow_color = theme['color8'],
+        foreground = theme['color15']
     ),
     dict(
-        background = theme['base02'],
-        arrow_color = theme['base03'],
-        foreground = theme['base01']
+        # background = theme['color8'],
+        background = "#000000.1",
+        arrow_color = "#666666",
+        # arrow_color = theme['color8'],
+        foreground = theme['color15']
     )
 ]
-
-dim_color_scheme = dict(
-    background = theme['base03'],
-    arrow_color = theme['base02'],
-    foreground = theme['base5']
-)
 
 # Separator-related functions and variables
 
@@ -70,14 +34,16 @@ def separator(right_looking = True):
         color_scheme = color_schemes[separator.current_scheme]
 
         return widget.TextBox(
-            u'\ue0b0', 
+            "",
+            # u'\ue0b0', 
             **separator_defaults,
             background = color_scheme["background"],
             foreground = color_scheme["arrow_color"]
         )
     else:
         ret = widget.TextBox(
-            u'\ue0b2', 
+            "",
+            # u'\ue0b2', 
             **separator_defaults,
             background = color_scheme["background"],
             foreground = color_scheme["arrow_color"]
@@ -100,17 +66,23 @@ separator_defaults = dict(
     padding=0,
 )
 
+bar_defaults = dict(
+    opacity=0.1,
+    background='#000000',
+)
+
 widget_defaults = dict(
     font=font_default,
-    fontsize=14,
+    fontsize=13,
     padding=6,
+    opacity=0,
 )
 extension_defaults = widget_defaults.copy()
 
 icon_defaults = dict(
     font=font_default,
-    fontsize = 18,
-    padding = 6,
+    fontsize=18,
+    padding=6,
 )
 
 widget_small_defaults = dict(
@@ -124,49 +96,11 @@ tasklist_widget_defaults = dict(
     fontsize=13,
 )
 
-battery_widget_defaults = dict(
-    battery=0,
-#    format='{char}[{percent:2.0%}]  ',
-    format='{char} {percent:2.0%} {hour:d}h:{min:02d}m',
-#    format='{char} {hour:d}h:{min:02d}m',
-    low_percentage=0.2,
-    update_interval=5,
-    show_short_text=True,
-    charge_char='',
-    empty_char='',
-    discharge_char='',
-    hide_threshold=0
-)
-
-def sanitize_string(s):
-    # return s.encode('ascii', 'ignore').decode('ascii', 'ignore')
-    ns=str(s)
-    return ns.replace('\xe2\x80\x8b', '')
-    # return s.encode('ascii', 'ignore').decode('unicode_escape')
-
-#    return input_string.decode('utf8').encode('ascii', errors='ignore')
-#    clean_string = re.sub('<[^<]+>', "", input_string)
-    # bstring = b'str(my_byte_str, 'utf-8')
-    # clean_string = re.sub('[^0-9a-zA-Z\s]+', "", input_string)
-    # return clean_string
-
-# def sanitize_string2(input_string):
-#     clean_string = [s for s in input_string if s.isascii()]
-#     clean_string = "".join(clean_string)
-#     return clean_string
-
-
 bar_widgets = [
 
     widget.CurrentLayoutIcon(
         **widget_defaults,scale=0.7,
         **color_scheme,
-    ),
-
-    widget.CurrentLayout(
-        **widget_defaults,
-        **color_scheme,
-        width=80,
     ),
 
     separator(),
@@ -176,24 +110,27 @@ bar_widgets = [
         **color_scheme,
     ),
 
-widget.GroupBox(
+    widget.GroupBox(
         **widget_defaults,
         **color_scheme,
         disable_drag=True,
         hide_unused=True,
         rounded=True,
+        borderwidth=1,
+        spacing=3,
         padding_x=2,
         padding_y=2,
         # Text colors
-        active=theme["base01"],
-        inactive=theme["base5"],
+        active=theme["foreground"],
+        inactive=theme["background"],
         # Current screen colors
-        highlight_method='line',
-        highlight_color=theme["base4"],
-        this_current_screen_border=theme["current"],
+        highlight_method='border',
+        highlight_color=theme["color4"],
+        block_highlight_text_color=theme["foreground"],
+        this_current_screen_border=theme["color5"],
         # Urgent colors
         urgent_alert_method="line",
-        urgent_border=theme["urgent"]
+        urgent_border=theme["color1"]
     ),
 
     widget.Spacer(
@@ -208,52 +145,18 @@ widget.GroupBox(
         **color_scheme,
     ),
 
-    # widget.TextBox(
-    #     '|',
-    #     **icon_defaults,
-    #     **color_scheme,
-    # ),
-
-    # widget.WindowList(
-    #     **widget_defaults,
-    #     **color_scheme,
-    #     # selected=('<b>[ ', ' ]</b>')
-    # ),
-
-
     widget.TaskList(
         **tasklist_widget_defaults,
         **color_scheme,
         highlight_method='border',
         borderwidth=1,
+        icon_size=20,
         max_title_width=800,
         margin_x=1,
         margin_y=1,
         padding_x=8,
-        padding_y=2,
+        padding_y=4,
     ),
-
-
-    # widget.TextBox(
-    #     '|',
-    #     **icon_defaults,
-    #     **color_scheme,
-    # ),
-
-    # separator(),
-
-    # widget.Spacer(
-    #     length = 4,
-    #     **color_scheme,
-    # ),
-
-    # widget.WindowTabs(
-    #     **widget_defaults,
-    #     **color_scheme,
-    # ),
-
-
-    separator(right_looking = False),
 
     widget.Net(
         **widget_small_defaults,
@@ -262,28 +165,12 @@ widget.GroupBox(
         format='{down} ↓↑ {up}',
     ),
 
-    # separator(right_looking = False),
-    
-    # widget.CPUGraph(
-    #     **widget_defaults,
-    #     **color_scheme,
-    #     frequency=0.33,
-    #     samples=300,
-    #     border_width=0,
-    #     line_width=1,
-    #     fill_color=theme['base4'],
-    #     margin_x=12
-    # ),
-
     separator(right_looking = False),
 
     widget.Clock(
         **widget_defaults,
         **color_scheme,
-        font_size=16,
-        fontshadow="#FFFFFF",
         format='%A %B %d, %Y',
-#        format='%A %B %d, %Y  |  %H:%M:%S',
     ),
 
     separator(right_looking = False),
@@ -291,8 +178,6 @@ widget.GroupBox(
     widget.Clock(
         **widget_defaults,
         **color_scheme,
-        font_size=16,
-        fontshadow="#FFFFFF",
         format='%H:%M:%S',
     ),
 
@@ -307,7 +192,7 @@ widget.GroupBox(
         no_update_string='',
         update_interval=1800,
         colour_no_updates=color_scheme["foreground"],
-        colour_have_updates=theme["updates"],
+        colour_have_updates=theme["color1"],
     ),
 
     widget.Systray(
@@ -316,80 +201,12 @@ widget.GroupBox(
         **color_scheme,
     ),
 
-
-    # separator(right_looking = False),
-
     widget.LaunchBar( [
             ('', 'qshell:self.qtile.cmd_shutdown()', 'logout from qtile')
         ],
         **widget_defaults,
         **color_scheme,
     ),
-
-    # widget.Spacer(
-    #     length = 16,
-    #     **color_scheme,
-    # ),
-
-    # separator(right_looking = False),
-
-    # # Volume icon and widget
-    # widget.TextBox(
-    #     u'\ue8ef',
-    #     **icon_defaults,
-    #     **color_scheme,
-    # ),
-    # widget.Volume(
-    #     **widget_defaults,
-    #     **color_scheme,
-    #     device = "sysdefault",
-    #     format='[{percent:2.0%}]  '
-    # ),
-
-
-    # widget.Spacer(
-    #     length = 16,
-    #     **color_scheme,
-    # ),
-
-    # separator(right_looking = False),
-    
-    # # Brightness icon and widget
-    # widget.TextBox(
-    #     u'\u263c',
-    #     **icon_defaults,
-    #     **color_scheme,
-    # ),
-    # widget.Backlight(
-    #     **widget_defaults,
-    #     **color_scheme,
-    #     backlight_name='intel_backlight',
-    #     format='[{percent:2.0%}]  '
-    # ),
-
-    # separator(right_looking = False),
-    
-    # widget.Battery(
-    #     **widget_defaults,
-    #     **battery_widget_defaults,
-    #     **color_scheme
-    # ),
-
-    # separator(right_looking = False),
-    
-    # # Battery icon and widget
-    # widget.TextBox(
-    #     u'\ue832', 
-    #     **icon_defaults,
-    #     **color_scheme,
-    # ),
-    # widget.BatteryIcon(
-    #     **widget_defaults,
-    #     **battery_widget_defaults,
-    #     **color_scheme,
-    #     battery=1
-    # ),
-
 ]
 
 # Second screen bar
@@ -444,7 +261,8 @@ screens = [
     Screen(
         top=bar.Bar(
             bar_widgets,
-            24,
+            32,
+            **bar_defaults
         ),
     ),
 ]
@@ -477,6 +295,7 @@ if get_num_monitors() > 1:
                     bottom=bar.Bar(
                     second_bar_widgets,
                     24,
-            ),
-        )
+                    **bar_defaults
+                    ),
+            )
     )

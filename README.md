@@ -1,6 +1,9 @@
 # Litex's qtile config files
 #
-# (Based on G-Wizzy's qtile config files (https://github.com/qtile/qtile-examples/tree/master/g-wizzy)
+# Influence and Code Directly Stolen From:
+#
+# https://github.com/qtile/qtile-examples/tree/master/g-wizzy
+# https://github.com/qtile/qtile-examples/tree/master/lightspeedlife
 #
 
 The main interests in these config files might be the shortcuts in keys.py and the bar customization in screens.py.

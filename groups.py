@@ -5,8 +5,8 @@ from keys import keys
 
 # GROUP Configuration
 group_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall",
-                 "monadtall", "monadtall", "monadtall", "treetab", "floating", "monadwide"]
+group_layouts = ["bsp", "bsp", "bsp", "bsp",
+                 "bsp", "bsp", "bsp", "treetab", "floating", "monadwide"]
 group_labels = ["1 ", "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "0"]
 #group_labels = ["Web", "Edit/chat", "Image", "Gimp", "Meld", "Video", "Vb", "Files", "Mail", "Music",]
 #group_labels = ["", "", "", "", "", "", "", "", "", "",]
